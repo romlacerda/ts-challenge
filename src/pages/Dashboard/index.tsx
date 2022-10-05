@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Header from '../../components/Header';
+import { Header } from '../../components/Header';
 import api from '../../services/api';
 import ModalAddFood from '../../components/ModalAddFood';
 import ModalEditFood from '../../components/ModalEditFood';
@@ -10,9 +10,9 @@ import { Food } from '../../components/Food';
 
 export function Dashboard() {
   const [foods, setFoods] = useState<FoodProps[]>([]);
-  const [editingFood, setEditingFood] = useState([]);
-  const [modalOpen, setModalOpen] = useState([]);
-  const [editModalOpen, setEditModalOpen] = useState([]);
+  const [editingFood, setEditingFood] = useState<FoodProps>({} as FoodProps);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
 
@@ -71,7 +71,7 @@ export function Dashboard() {
     setEditModalOpen(!editModalOpen);
   }
 
-  function handleEditFood(food: Food) {
+  function handleEditFood(food: FoodProps) {
     setEditingFood(food);
     setEditModalOpen(true);
   }
@@ -97,8 +97,8 @@ export function Dashboard() {
             <Food
               key={food.id}
               food={food}
-              handleDelete={handleDeleteFood}
-              handleEditFood={handleEditFood}
+              handleDelete={() => handleDeleteFood(food.id)}
+              handleEditFood={() => handleEditFood(food)}
             />
           ))}
       </FoodsContainer>

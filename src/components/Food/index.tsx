@@ -1,17 +1,17 @@
-import { useState } from 'react';
+import { MouseEventHandler, useState } from 'react';
 import { FiEdit3, FiTrash } from 'react-icons/fi';
 
 import { Container } from './styles';
 import api from '../../services/api';
-import { Food } from '../../shared/interfaces';
+import { Food as FoodInterface } from '../../shared/interfaces';
 
 interface FoodProps {
-  food: Food;
-  handleDelete: () => void;
-  handleEditFood: () => void;
+  food: FoodInterface;
+  handleDelete: (id: string) => void;
+  handleEditFood: (food: FoodInterface) => void;
 }
 
-export function Food({ food }: FoodProps) {
+export function Food({ food, handleEditFood, handleDelete }: FoodProps) {
 
   const [isAvailable, setIsAvailable] = useState<boolean>(true);
 
@@ -25,7 +25,7 @@ export function Food({ food }: FoodProps) {
     setIsAvailable(!isAvailable);
   }
 
-  function setEditingFood() {
+  function setEditingFood(food: FoodInterface) {
     handleEditFood(food);
   }
 
@@ -46,7 +46,7 @@ export function Food({ food }: FoodProps) {
           <button
             type="button"
             className="icon"
-            onClick={setEditingFood}
+            onClick={() => setEditingFood(food)}
             data-testid={`edit-food-${food.id}`}
           >
             <FiEdit3 size={20} />
@@ -55,7 +55,7 @@ export function Food({ food }: FoodProps) {
           <button
             type="button"
             className="icon"
-            // onClick={() => handleDelete(food.id)}
+            onClick={() => handleDelete(food.id)}
             data-testid={`remove-food-${food.id}`}
           >
             <FiTrash size={20} />
@@ -80,5 +80,3 @@ export function Food({ food }: FoodProps) {
     </Container>
   );
 };
-
-export default Food;
